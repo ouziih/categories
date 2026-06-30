@@ -27,3 +27,13 @@ $categories = [
             "produits" => []
         ]
 ];
+
+// 2 - Afficher tous les catégories qui n'ont pas de produit
+
+foreach ($categories as $categorie) {
+    if(empty($categorie["produits"]))
+        {
+            echo "Nom : ".$categorie["nom"]."\n";
+            echo "Code : ".$categorie["code"]."\n";
+        }
+}
