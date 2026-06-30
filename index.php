@@ -37,3 +37,63 @@ foreach ($categories as $categorie) {
             echo "Code : ".$categorie["code"]."\n";
         }
 }
+
+// 3 - Enregistrer une nouvelle categorie
+// 3-1 saisir le code obligatoire et unique
+// 3-2 saisir le nom obligatoire et unique
+// 3-3 les produits sont initialisés vides
+
+$codeEstUnik;
+
+do {
+    $codeEstUnik=true;
+    $code = readline("entre un code : ");
+    if($code !== ""){
+        foreach ($categories as $categorie) {
+            if($categorie["code"]===$code)
+                {
+                    $codeEstUnik = false;
+                    break;
+                }
+            }
+            if(!$codeEstUnik){
+                echo "le code doit etre unique\n";
+            }
+    }
+    else{
+        echo "il faut remplir le champ\n";
+        $codeEstUnik=false;
+    }
+} while (!$codeEstUnik);
+
+$nomEstUnik;
+
+do {
+    $nomEstUnik=true;
+    $nom = readline("entre un nom : ");
+    if($nom !== ""){
+        foreach ($categories as $categorie) {
+            if($categorie["nom"]===$nom)
+                {
+                    $nomEstUnik = false;
+                    break;
+                }
+            }
+            if(!$nomEstUnik){
+                echo "le nom doit etre unique\n";
+            }
+    }
+    else{
+        echo "il faut remplir le champ\n";
+        $nomEstUnik=false;
+    }
+} while (!$nomEstUnik);
+
+$nouvelleCategorie = [
+            "code" => $code,
+            "nom" => $nom,
+            "produits" => []
+        ];
+
+$categories[]=$nouvelleCategorie;
+var_dump($categories);
