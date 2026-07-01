@@ -203,30 +203,50 @@ function ajouterProduit(array &$categories, int $indexCategorie, string $referen
     ];
 }
 
-// 3 -
-$code = validSaisieChamp($categories,"code");
+// // 3 -
+// $code = validSaisieChamp($categories,"code");
 
-$nom = validSaisieChamp($categories,"nom");
+// $nom = validSaisieChamp($categories,"nom");
 
-$nouvelleCategorie = constructeurDeCategorie($code,$nom,[]);
+// $nouvelleCategorie = constructeurDeCategorie($code,$nom,[]);
 
-enregistreCategorie($nouvelleCategorie,$categories);
+// enregistreCategorie($nouvelleCategorie,$categories);
 
-print_r($categories);
+// print_r($categories);
 
 
-// 4 Ajouter un produit a une categorie
+// // 4 Ajouter un produit a une categorie
+// $codePourRecherche = recupChamp("Entre un code pour la recherche : ");
+// $indexCategorie = rechercheCategorieParCle($categories, "code", $codePourRecherche);
+
+// if ($indexCategorie === false) {
+//     afficheMessage("Le code est introuvable\n");
+// } else {
+//     $reference   = validSaisieRef($categories);
+//     $nomProduit  = validSaisieObligatoire("nom du produit");
+//     $prixProduit = validSaisiePositif("prix");
+//     $qteProduit  = validSaisiePositif("quantite");
+//     ajouterProduit($categories, $indexCategorie, $reference, $nomProduit, $prixProduit, $qteProduit);
+//     afficheMessage("Produit ajouté avec succès !\n");
+//     print_r($categories[$indexCategorie]);
+// }
+
+// 5 - 
+// 5 - Ajouter autant de produits que l'utilisateur le souhaite
 $codePourRecherche = recupChamp("Entre un code pour la recherche : ");
 $indexCategorie = rechercheCategorieParCle($categories, "code", $codePourRecherche);
 
 if ($indexCategorie === false) {
     afficheMessage("Le code est introuvable\n");
 } else {
-    $reference   = validSaisieRef($categories);
-    $nomProduit  = validSaisieObligatoire("nom du produit");
-    $prixProduit = validSaisiePositif("prix");
-    $qteProduit  = validSaisiePositif("quantite");
-    ajouterProduit($categories, $indexCategorie, $reference, $nomProduit, $prixProduit, $qteProduit);
-    afficheMessage("Produit ajouté avec succès !\n");
+    do {
+        $reference   = validSaisieRef($categories);
+        $nomProduit  = validSaisieObligatoire("nom du produit");
+        $prixProduit = validSaisiePositif("prix");
+        $qteProduit  = validSaisiePositif("quantite");
+        ajouterProduit($categories, $indexCategorie, $reference, $nomProduit, $prixProduit, $qteProduit);
+        afficheMessage("Produit ajouté avec succès !\n");
+        $reponse = recupChamp("Voulez-vous ajouter un autre produit ? (oui/non) : ");
+    } while (strtolower($reponse)==="oui");
     print_r($categories[$indexCategorie]);
 }
