@@ -52,4 +52,69 @@ afficheCategorie($categories);
 
 
 
+// 3 - Enregistrer une nouvelle categorie
+// 3-1 saisir le code obligatoire et unique
+// 3-2 saisir le nom obligatoire et unique
+// 3-3 les produits sont initialisés vides
 
+function recupChamp(string $msg):string{
+    return readline($msg);
+}
+
+function verifChampVide(string $champ):bool{
+    if($champ === "")
+        {
+            return true;
+        }
+    return false;
+}
+
+function verifUnik(array $tableau, string $element,string $cle):bool{
+    foreach ($tableau as $categorie) {
+            if($categorie[$cle]===$element)
+                {
+                    return false;
+                }
+            }
+    return true;
+}
+
+function validSaisieChamp(array $categories, string $cle):string{
+
+    do {
+    $testeur;
+    $champ = recupChamp("entre un ".$cle." : ");
+    if(!verifChampVide($champ)){
+      $testeur = verifUnik($categories,$champ,$cle);
+            if(!$testeur){
+                afficheMessage("le ".$cle." doit etre unique\n");
+            }
+    }
+    else{
+        afficheMessage("il faut remplir le champ\n");
+        $testeur=false;
+    }
+} while (!$testeur);  
+return $champ;  
+
+}
+
+function enregistreCategorie(array $categorie,array &$categories):void{
+    array_push($categories,$categorie);
+}
+
+function constructeurDeCategorie(string $code,string $nom,array $produits){
+    return [
+            "code" => $code,
+            "nom" => $nom,
+            "produits" => $produits
+        ];
+}
+
+$code = validSaisieChamp($categories,"code");
+$nom = validSaisieChamp($categories,"nom");
+
+
+$nouvelleCategorie = constructeurDeCategorie($code,$nom,[]);
+enregistreCategorie($nouvelleCategorie,$categories);
+print_r($categories);
