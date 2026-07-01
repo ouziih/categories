@@ -30,13 +30,13 @@ $categories = [
 
 // 2 - Afficher tous les catégories qui n'ont pas de produit
 
-foreach ($categories as $categorie) {
-    if(empty($categorie["produits"]))
-        {
-            echo "Nom : ".$categorie["nom"]."\n";
-            echo "Code : ".$categorie["code"]."\n";
-        }
-}
+// foreach ($categories as $categorie) {
+//     if(empty($categorie["produits"]))
+//         {
+//             echo "Nom : ".$categorie["nom"]."\n";
+//             echo "Code : ".$categorie["code"]."\n";
+//         }
+// }
 
 // 3 - Enregistrer une nouvelle categorie
 // 3-1 saisir le code obligatoire et unique
@@ -99,6 +99,85 @@ $categories[]=$nouvelleCategorie;
 
 // 4 Ajouter un produit a une categorie
 // 4 - 1 Rechercher une catégorie a partir de son code
+// $cateEstPresent = false;
+
+// $codePourRecherche = readline("entre un code Pour la recherche: ");
+
+// foreach ($categories as $key => $value) {
+//         if ($value["code"] === $codePourRecherche) {
+//             $cateEstPresent = true;
+//         }
+
+//     // 4 - 2 Saisir les informations du produits
+
+//     if($cateEstPresent){
+
+//     do {
+//         $referenceEstUnik=true;
+//         $reference = readline("entre une reference pour le produit : ");
+//         if($reference !== ""){
+//             foreach ($categories as $categorie) {
+
+//                 foreach ($categorie["produits"] as $produit) {
+//                     if($produit["reference"]===$reference)
+//                     {
+//                         $referenceEstUnik = false;
+//                         break;
+//                     }
+//                 }
+//                 }
+//                 if(!$referenceEstUnik){
+//                     echo "le reference doit etre unique\n";
+//                 }
+//         }
+//         else{
+//             echo "il faut remplir le champ\n";
+//             $referenceEstUnik=false;
+//         }
+//     } while (!$referenceEstUnik);
+
+//     do {
+//         $nomProduit = readline("entre un nom pour le produit : ");
+//         if($nomProduit === ""){
+//             echo "il faut remplir le champ\n";   
+//         }
+//     } while ($nomProduit === "");
+
+//     do {
+//         $prixProduit = (int)readline("entre un prix pour le produit : ");
+//         if($prixProduit <=0){
+//             echo "le prix doit etre superieur a 0 et il faut remplir le champ\n";   
+//         }
+//     } while ($prixProduit<=0);
+
+//     do {
+//         $qteProduit = (int)readline("entre une quantité pour le produit : ");
+//         if($qteProduit <=0){
+//             echo "la quantité doit etre superieur a 0 et il faut remplir le champ\n";   
+//         }
+//     } while ($qteProduit<=0);
+
+
+//     $produit = [
+//                     "nom" => $nomProduit,
+//                     "reference" => $reference,
+//                     "prix" => $prixProduit,
+//                     "quantite" => $qteProduit 
+//                  ];
+//     $categories[$key]["produits"][]=$produit;
+    
+    
+//     break;
+//     }
+//     }
+//     var_dump($categories);
+    
+// if (!$cateEstPresent) {
+//     echo "le code est introuvable\n";
+// }
+
+// 5 - On affectte des produits tant que l'utilisateur veux en saisir
+
 $cateEstPresent = false;
 
 $codePourRecherche = readline("entre un code Pour la recherche: ");
@@ -112,65 +191,78 @@ foreach ($categories as $key => $value) {
 
     if($cateEstPresent){
 
-    do {
-        $referenceEstUnik=true;
-        $reference = readline("entre une reference pour le produit : ");
-        if($reference !== ""){
-            foreach ($categories as $categorie) {
+             do {
+            
 
-                foreach ($categorie["produits"] as $produit) {
-                    if($produit["reference"]===$reference)
-                    {
-                        $referenceEstUnik = false;
-                        break;
+                do {
+                    $referenceEstUnik=true;
+                    $reference = readline("entre une reference pour le produit : ");
+                    if($reference !== ""){
+                        foreach ($categories as $categorie) {
+
+                            foreach ($categorie["produits"] as $produit) {
+                                if($produit["reference"]===$reference)
+                                {
+                                    $referenceEstUnik = false;
+                                    break;
+                                }
+                            }
+                            }
+                            if(!$referenceEstUnik){
+                                echo "le reference doit etre unique\n";
+                            }
                     }
-                }
-                }
-                if(!$referenceEstUnik){
-                    echo "le reference doit etre unique\n";
-                }
-        }
-        else{
-            echo "il faut remplir le champ\n";
-            $referenceEstUnik=false;
-        }
-    } while (!$referenceEstUnik);
+                    else{
+                        echo "il faut remplir le champ\n";
+                        $referenceEstUnik=false;
+                    }
+                } while (!$referenceEstUnik);
 
-    do {
-        $nomProduit = readline("entre un nom pour le produit : ");
-        if($nomProduit === ""){
-            echo "il faut remplir le champ\n";   
+                do {
+                    $nomProduit = readline("entre un nom pour le produit : ");
+                    if($nomProduit === ""){
+                        echo "il faut remplir le champ\n";   
+                    }
+                } while ($nomProduit === "");
+
+                do {
+                    $prixProduit = (int)readline("entre un prix pour le produit : ");
+                    if($prixProduit <=0){
+                        echo "le prix doit etre superieur a 0 et il faut remplir le champ\n";   
+                    }
+                } while ($prixProduit<=0);
+
+                do {
+                    $qteProduit = (int)readline("entre une quantité pour le produit : ");
+                    if($qteProduit <=0){
+                        echo "la quantité doit etre superieur a 0 et il faut remplir le champ\n";   
+                    }
+                } while ($qteProduit<=0);
+
+                $produit=[];
+
+                array_push($produit,[
+                                "nom" => $nomProduit,
+                                "reference" => $reference,
+                                "prix" => $prixProduit,
+                                "quantite" => $qteProduit 
+                            ]);
+
+                // $produit[] = [
+                //                 "nom" => $nomProduit,
+                //                 "reference" => $reference,
+                //                 "prix" => $prixProduit,
+                //                 "quantite" => $qteProduit 
+                //             ];
+                array_push($categories[$key]["produits"],$produit);
+                $choix = readline("voulez vous ajouter a nouveau oui - non : ");
+                       
+            } while (strtolower($choix) === "oui");
+            
         }
-    } while ($nomProduit === "");
-
-    do {
-        $prixProduit = (int)readline("entre un prix pour le produit : ");
-        if($prixProduit <=0){
-            echo "le prix doit etre superieur a 0 et il faut remplir le champ\n";   
-        }
-    } while ($prixProduit<=0);
-
-    do {
-        $qteProduit = (int)readline("entre une quantité pour le produit : ");
-        if($qteProduit <=0){
-            echo "la quantité doit etre superieur a 0 et il faut remplir le champ\n";   
-        }
-    } while ($qteProduit<=0);
-
-
-    $produit = [
-                    "nom" => $nomProduit,
-                    "reference" => $reference,
-                    "prix" => $prixProduit,
-                    "quantite" => $qteProduit 
-                 ];
-    $categories[$key]["produits"][]=$produit;
-    
-    
-    break;
+        
     }
-    }
-    var_dump($categories);
+    print_r($categories);
     
 if (!$cateEstPresent) {
     echo "le code est introuvable\n";
