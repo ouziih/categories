@@ -28,3 +28,28 @@ $categories = [
         ]
 ];
 
+// 2 - Afficher tous les catégories qui n'ont pas de produit
+
+function verifVide(array $categorie):bool{
+    return (empty($categorie["produits"]));
+}
+function afficheMessage(string $msg):void{
+    echo $msg;
+}
+
+function afficheCategorie(array $categories):void{
+    foreach ($categories as $categorie) {
+    if(!verifVide($categorie))
+        {
+            
+            afficheMessage("Nom : ".$categorie["nom"]."\n");
+            afficheMessage("Code : ".$categorie["code"]."\n");
+        }
+    }
+}
+
+afficheCategorie($categories);
+
+
+
+
