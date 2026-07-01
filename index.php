@@ -36,7 +36,6 @@ function verifVide(array $categorie):bool{
 function afficheMessage(string $msg):void{
     echo $msg;
 }
-
 function afficheCategorie(array $categories):void{
     foreach ($categories as $categorie) {
     if(verifVide($categorie))
@@ -79,6 +78,28 @@ function verifUnik(array $tableau, string $element,string $cle):bool{
     return true;
 }
 
+
+
+function validSaisieChampRef(array $categories, string $cle):string{
+
+    do {
+    $testeur;
+    $champ = recupChamp("entre un ".$cle." : ");
+    if(!verifChampVide($champ)){
+      $testeur = verifUnikRef($categories,$champ,$cle);
+            if(!$testeur){
+                afficheMessage("le ".$cle." doit etre unique\n");
+            }
+    }
+    else{
+        afficheMessage("il faut remplir le champ\n");
+        $testeur=false;
+    }
+} while (!$testeur);  
+return $champ;  
+}
+
+
 function validSaisieChamp(array $categories, string $cle):string{
 
     do {
@@ -96,7 +117,6 @@ function validSaisieChamp(array $categories, string $cle):string{
     }
 } while (!$testeur);  
 return $champ;  
-
 }
 
 function enregistreCategorie(array $categorie,array &$categories):void{
@@ -111,10 +131,102 @@ function constructeurDeCategorie(string $code,string $nom,array $produits){
         ];
 }
 
+function rechercheCategorieParCle(array $categories, string $cle, string $valeur): bool | int {
+    foreach ($categories as $key => $categorie) {
+        if($categorie[$cle] === $valeur)
+            {
+                return $key;
+            }
+    }
+    return false;
+
+}
+
+function verifReferenceUnique(array $categories, string $reference): bool {
+    foreach ($categories as $categorie) {
+        foreach ($categorie["produits"] as $produit) {
+            if ($produit["reference"] === $reference) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+function validSaisieRef(array $categories): string {
+    do {
+        $testeur = false;
+        $reference = recupChamp("Entre une référence : ");
+        if (!verifChampVide($reference)) {
+            $testeur = verifReferenceUnique($categories, $reference);
+            if (!$testeur) {
+                afficheMessage("La référence doit être unique\n");
+            }
+        } else {
+            afficheMessage("Il faut remplir le champ\n");
+        }
+    } while (!$testeur);
+    return $reference;
+}
+
+function validSaisieObligatoire(string $cle): string {
+    do {
+        $testeur = false;
+        $champ = recupChamp("Entre un " . $cle . " : ");
+        if (!verifChampVide($champ)) {
+            $testeur = true;
+        } else {
+            afficheMessage("Il faut remplir le champ\n");
+        }
+    } while (!$testeur);
+    return $champ;
+}
+
+function validSaisiePositif(string $cle): int {
+    do {
+        $champ = (int) recupChamp("Entre un " . $cle . " : ");
+        if ($champ <= 0) {
+            afficheMessage("Le " . $cle . " doit être supérieur à 0\n");
+        }
+    } while ($champ <= 0);
+    return $champ;
+}
+
+
+function ajouterProduit(array &$categories, int $indexCategorie, string $reference, string $nom, int $prix, int $quantite): void {
+    $categories[$indexCategorie]["produits"][] = [
+        "nom"       => $nom,
+        "reference" => $reference,
+        "prix"      => $prix,
+        "quantite"  => $quantite
+    ];
+}
+
+// 3 -
 $code = validSaisieChamp($categories,"code");
+
 $nom = validSaisieChamp($categories,"nom");
 
-
 $nouvelleCategorie = constructeurDeCategorie($code,$nom,[]);
+
 enregistreCategorie($nouvelleCategorie,$categories);
+
 print_r($categories);
+
+
+// 4 Ajouter un produit a une categorie
+$codePourRecherche = recupChamp("Entre un code pour la recherche : ");
+$indexCategorie = rechercheCategorieParCle($categories, "code", $codePourRecherche);
+
+if ($indexCategorie === false) {
+    afficheMessage("Le code est introuvable\n");
+} else {
+    $reference   = validSaisieRef($categories);
+    $nomProduit  = validSaisieObligatoire("nom du produit");
+    $prixProduit = validSaisiePositif("prix");
+    $qteProduit  = validSaisiePositif("quantite");
+    ajouterProduit($categories, $indexCategorie, $reference, $nomProduit, $prixProduit, $qteProduit);
+    afficheMessage("Produit ajouté avec succès !\n");
+    print_r($categories[$indexCategorie]);
+}
