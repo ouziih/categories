@@ -39,7 +39,7 @@ function afficheMessage(string $msg):void{
 
 function afficheCategorie(array $categories):void{
     foreach ($categories as $categorie) {
-    if(!verifVide($categorie))
+    if(verifVide($categorie))
         {
             
             afficheMessage("Nom : ".$categorie["nom"]."\n");
